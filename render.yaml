@@ -22,10 +22,9 @@ services:
           name: blog-app-db
           property: connectionString
 
-  # Frontend static site
-  - type: static_site
+  # Frontend static site - using "static" type which is the correct type for Render static sites
+  - type: static
     name: blog-app-frontend
-    # Static sites use static_site type instead of web with runtime static
     rootDir: frontend
     buildCommand: npm install && npm run build
     publishDir: build
