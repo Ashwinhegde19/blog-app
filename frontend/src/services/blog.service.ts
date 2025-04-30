@@ -24,27 +24,28 @@ export interface BlogsResponse {
 
 const BlogService = {
   getAllBlogs: async (page = 1): Promise<BlogsResponse> => {
-    const response = await apiClient.get(`/blog/posts/?page=${page}`);
+    // Make sure to use trailing slashes with Django - we're requesting /api/blog/posts/ not /api/blog/posts
+    const response = await apiClient.get(`blog/posts/?page=${page}`);
     return response.data;
   },
 
   getBlogById: async (id: number): Promise<BlogPost> => {
-    const response = await apiClient.get(`/blog/posts/${id}/`);
+    const response = await apiClient.get(`blog/posts/${id}/`);
     return response.data;
   },
 
   createBlog: async (data: CreateBlogData): Promise<BlogPost> => {
-    const response = await apiClient.post('/blog/posts/', data);
+    const response = await apiClient.post('blog/posts/', data);
     return response.data;
   },
 
   updateBlog: async (id: number, data: CreateBlogData): Promise<BlogPost> => {
-    const response = await apiClient.put(`/blog/posts/${id}/`, data);
+    const response = await apiClient.put(`blog/posts/${id}/`, data);
     return response.data;
   },
 
   deleteBlog: async (id: number): Promise<void> => {
-    await apiClient.delete(`/blog/posts/${id}/`);
+    await apiClient.delete(`blog/posts/${id}/`);
   },
 };
 
