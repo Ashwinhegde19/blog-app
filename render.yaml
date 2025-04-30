@@ -1,0 +1,41 @@
+services:
+  # Backend API service
+  - type: web
+    name: blog-app-backend
+    runtime: python
+    region: oregon
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    startCommand: gunicorn blog_project.wsgi:application
+    envVars:
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: False
+      - key: ALLOWED_HOSTS
+        value: blog-app-backend.onrender.com,*.onrender.com
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://blog-app-frontend.onrender.com
+      - key: DATABASE_URL
+        fromDatabase:
+          name: blog-app-db
+          property: connectionString
+
+  # Frontend static site
+  - type: web
+    name: blog-app-frontend
+    runtime: static
+    region: oregon
+    plan: free
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./build
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://blog-app-backend.onrender.com/api
+
+databases:
+  - name: blog-app-db
+    plan: free
+    region: oregon
