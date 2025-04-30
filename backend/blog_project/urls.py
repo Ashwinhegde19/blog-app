@@ -16,8 +16,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.http import JsonResponse
+from django.views.generic import RedirectView
+
+# Simple view for API root
+def api_root(request):
+    return JsonResponse({
+        'message': 'Welcome to Blog API',
+        'endpoints': {
+            'admin': '/admin/',
+            'api_blog': '/api/blog/',
+            'api_users': '/api/users/',
+            'api_auth': '/api-auth/'
+        }
+    })
 
 urlpatterns = [
+    path('', api_root, name='api-root'),  # Add root URL handler
     path('admin/', admin.site.urls),
     path('api/blog/', include('blog.urls')),
     path('api/users/', include('users.urls')),
