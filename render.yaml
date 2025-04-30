@@ -23,13 +23,12 @@ services:
           property: connectionString
 
   # Frontend static site
-  - type: web
+  - type: static_site
     name: blog-app-frontend
-    runtime: static
-    plan: free
+    # Static sites use static_site type instead of web with runtime static
     rootDir: frontend
     buildCommand: npm install && npm run build
-    staticPublishPath: ./build
+    publishDir: build
     envVars:
       - key: REACT_APP_API_URL
         value: https://blog-app-backend.onrender.com/api
