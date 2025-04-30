@@ -26,7 +26,6 @@ services:
   - type: web
     name: blog-app-frontend
     runtime: static
-    region: oregon
     plan: free
     rootDir: frontend
     buildCommand: npm install && npm run build
