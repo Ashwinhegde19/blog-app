@@ -37,7 +37,7 @@ A full-stack blog application built with Django (backend) and React with TypeScr
 
 1. Clone the repository and navigate to the project directory:
 ```
-git clone https://github.com/yourusername/blog-app.git
+git clone https://github.com/Ashwinhegde19/blog-app.git
 cd blog-app
 ```
 
