@@ -49,4 +49,4 @@ const BlogService = {
   },
 };
 
-export default BlogService;
+export default BlogService
