@@ -20,6 +20,18 @@ class BlogPostViewSet(viewsets.ModelViewSet):
     """
     ViewSet for viewing and editing blog posts.
     """
-    queryset = BlogPost.objects.all()
+    queryset = BlogPost.objects.all().order_by('-created_at')  # Order by newest first
     serializer_class = BlogPostSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
+    
+    def get_permissions(self):
+        """
+        Instantiates and returns the list of permissions that this view requires.
+        """
+        if self.action in ['list', 'retrieve']:
+            permission_classes = [permissions.AllowAny]
+        else:
+            permission_classes = [IsAuthenticated, IsAuthorOrReadOnly]
+        return [permission() for permission in permission_classes]
+    
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)

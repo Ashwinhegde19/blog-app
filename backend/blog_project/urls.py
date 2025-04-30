@@ -16,8 +16,28 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
+
+@api_view(['GET'])
+def api_root(request, format=None):
+    """
+    Root endpoint that provides API documentation and available endpoints.
+    """
+    return Response({
+        'admin': reverse('admin:index', request=request, format=format),
+        'api_blog': request.build_absolute_uri('/api/blog/posts/'),
+        'api_users': request.build_absolute_uri('/api/users/'),
+        'api_auth': request.build_absolute_uri('/api/users/token/'),
+        'api_register': request.build_absolute_uri('/api/users/register/'),
+        'message': 'Welcome to the Blog API. Use the endpoints above to interact with the API.',
+        'documentation': 'This is the backend API for the Blog application.',
+        'status': 'API is running properly.'
+    })
 
 urlpatterns = [
+    path('', api_root, name='api-root'),
     path('admin/', admin.site.urls),
     path('api/blog/', include('blog.urls')),
     path('api/users/', include('users.urls')),
